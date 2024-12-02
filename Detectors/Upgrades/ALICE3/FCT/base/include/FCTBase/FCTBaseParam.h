@@ -26,7 +26,8 @@ namespace fct
 
 enum FCTGeometry {
   Default = 0,
-  Telescope = 1
+  Telescope = 1,
+  Segmented = 2
 };
 
 struct FCTBaseParam : public o2::conf::ConfigurableParamHelper<FCTBaseParam> {
@@ -41,6 +42,10 @@ struct FCTBaseParam : public o2::conf::ConfigurableParamHelper<FCTBaseParam> {
   Float_t etaIn = 4.5;
   Float_t etaOut = 1.5;
   Float_t Layerx2X0 = 0.01;
+
+  // FCTGeometry::Segmented parameters
+  Int_t nRadSeg = 2;
+  Int_t nAziSeg = 5;
 
   // FCTGeometry::External file
   std::string configFile = ""; // Overrides geoModel parameter when provided

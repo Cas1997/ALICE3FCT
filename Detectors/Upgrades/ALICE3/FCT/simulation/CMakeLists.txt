@@ -11,6 +11,7 @@
 
 o2_add_library(FCTSimulation
                SOURCES src/FCTLayer.cxx
+                       src/FCTSegment.cxx
                        src/Detector.cxx
                PUBLIC_LINK_LIBRARIES O2::FCTBase
                                      O2::ITSMFTSimulation
@@ -18,6 +19,7 @@ o2_add_library(FCTSimulation
 
 o2_target_root_dictionary(FCTSimulation
                           HEADERS include/FCTSimulation/Detector.h
-                                  include/FCTSimulation/FCTLayer.h)
+                                  include/FCTSimulation/FCTLayer.h
+                                  include/FCTSimulation/FCTSegment.h)
 
 o2_data_file(COPY data  DESTINATION Detectors/FCT/simulation)

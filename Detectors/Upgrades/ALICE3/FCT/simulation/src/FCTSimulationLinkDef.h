@@ -16,6 +16,7 @@
 #pragma link off all functions;
 
 #pragma link C++ class o2::fct::FCTLayer + ;
+#pragma link C++ class o2::fct::FCTSegment + ;
 #pragma link C++ class o2::fct::Detector + ;
 #pragma link C++ class o2::base::DetImpl < o2::fct::Detector> + ;
 

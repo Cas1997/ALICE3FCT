@@ -46,6 +46,7 @@ namespace o2
 namespace fct
 {
 class FCTLayer;
+class FCTSegment;
 }
 } // namespace o2
 
@@ -54,6 +55,7 @@ namespace o2
 namespace fct
 {
 class FCTLayer;
+class FCTSegment;
 
 class Detector : public o2::base::DetImpl<Detector>
 {
@@ -113,6 +115,7 @@ class Detector : public o2::base::DetImpl<Detector>
 
   void buildBasicFCT(const FCTBaseParam& param);
   void buildFCTV1();
+  void buildSegmentedFCT(const FCTBaseParam& param);
   void buildFCTFromFile(std::string);
 
   GeometryTGeo* mGeometryTGeo; //! access to geometry details
@@ -154,6 +157,7 @@ class Detector : public o2::base::DetImpl<Detector>
 
   std::vector<FCTLayer> mLayers;
   std::vector<FCTLayer> mConverterLayers;
+  std::vector<o2::fct::FCTSegment> mSegments;
   bool mIsPipeActivated = true; //! If Alice 3 pipe is present append inner disks to vacuum volume to avoid overlaps
 
   template <typename Det>
