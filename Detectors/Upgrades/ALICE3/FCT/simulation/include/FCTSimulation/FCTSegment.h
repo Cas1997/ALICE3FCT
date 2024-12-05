@@ -68,18 +68,18 @@ class FCTSegment : public TObject
   Int_t mLayerNumber = -1;
   Int_t mSectorNumber = -1;
   Int_t mModuleNumber = -1;
-  std::string mSegmentName;  			///< Current segment name
-  Double_t mVertL;                 ///< Vertical length of the trapezoid
-  Double_t mInnerL;                ///< Inner side length of the trapezoid
-  Double_t mOuterL;                ///< Outer side length of the trapezoid
-  Double_t mX;             				///< X position of the segment
-  Double_t mY;             				///< Y position of the segment
-  Double_t mZ;             				///< Z position of the segment
-  Double_t mRotX;                  ///< X rotation of the segment
-  Double_t mRotY;                  ///< X rotation of the segment
-  Double_t mRotZ;                  ///< X rotation of the segment
-  Double_t mChipThickness; 				///< Chip thickness
-  Double_t mx2X0;          				///< segment material budget x/X0
+  std::string mSegmentName; ///< Current segment name
+  Double_t mVertL;          ///< Vertical length of the trapezoid
+  Double_t mInnerL;         ///< Inner side length of the trapezoid
+  Double_t mOuterL;         ///< Outer side length of the trapezoid
+  Double_t mX;              ///< X position of the segment
+  Double_t mY;              ///< Y position of the segment
+  Double_t mZ;              ///< Z position of the segment
+  Double_t mRotX;           ///< X rotation of the segment
+  Double_t mRotY;           ///< X rotation of the segment
+  Double_t mRotZ;           ///< X rotation of the segment
+  Double_t mChipThickness;  ///< Chip thickness
+  Double_t mx2X0;           ///< segment material budget x/X0
 
   ClassDefOverride(FCTSegment, 0); // ALICE 3 EndCaps geometry
 };

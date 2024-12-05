@@ -47,7 +47,7 @@ namespace fct
 {
 class FCTLayer;
 class FCTSegment;
-}
+} // namespace fct
 } // namespace o2
 
 namespace o2
