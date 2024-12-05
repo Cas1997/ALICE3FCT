@@ -40,10 +40,7 @@ ClassImp(FCTSegment);
 
 FCTSegment::~FCTSegment() = default;
 
-FCTSegment::FCTSegment(Int_t layerNumber, Int_t sectorNumber, Int_t moduleNumber, std::string segmentName, Double_t x, Double_t y, Double_t z, Double_t vertL, Double_t innerL, Double_t outerL, Double_t rotX, Double_t rotY, Double_t rotZ, Float_t segmentx2X0) : 
-            mLayerNumber(layerNumber), mSectorNumber(sectorNumber), mModuleNumber(moduleNumber), mSegmentName(segmentName), mx2X0(segmentx2X0),
-            mX(x), mY(y), mZ(z), mRotX(rotX), mRotY(rotY), mRotZ(rotZ),
-            mVertL(vertL), mInnerL(innerL), mOuterL(outerL)
+FCTSegment::FCTSegment(Int_t layerNumber, Int_t sectorNumber, Int_t moduleNumber, std::string segmentName, Double_t x, Double_t y, Double_t z, Double_t vertL, Double_t innerL, Double_t outerL, Double_t rotX, Double_t rotY, Double_t rotZ, Float_t segmentx2X0) : mLayerNumber(layerNumber), mSectorNumber(sectorNumber), mModuleNumber(moduleNumber), mSegmentName(segmentName), mx2X0(segmentx2X0), mX(x), mY(y), mZ(z), mRotX(rotX), mRotY(rotY), mRotZ(rotZ), mVertL(vertL), mInnerL(innerL), mOuterL(outerL)
 {
   
   Float_t Si_X0 = 9.37;   // In cm

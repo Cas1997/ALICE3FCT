@@ -107,7 +107,7 @@ class GeometryTGeo : public o2::itsmft::GeometryTGeo
  protected:
   static constexpr int MAXACTIVE = 200; ///< max number of active layers/segments
 
-  Int_t mNumberOfActives;               ///< number of layers/segments (whichever is selected)
+  Int_t mNumberOfActives;              ///< number of layers/segments (whichever is selected)
   static std::string sInnerVolumeName; ///< Mother inner volume name
   static std::string sVolumeName;      ///< Mother volume name
   static std::string sSegmentName;     ///< Segment name

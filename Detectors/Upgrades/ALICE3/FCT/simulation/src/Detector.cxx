@@ -600,18 +600,19 @@ void Detector::createGeometry()
     vALIC->AddNode(volFCT, 2, new TGeoTranslation(0., 30., 0.));
   }
 
-  if(!mLayers.size()){LOG(info) << "Registering FCT SensitiveLayerIDs:";}
+  if(mLayers.size()){LOG(info) << "Registering FCT SensitiveLayerIDs:";}
   for (int iLayer = 0; iLayer < mLayers.size(); iLayer++) {
     auto layerID = gMC ? TVirtualMC::GetMC()->VolId(Form("%s_%d", GeometryTGeo::getFCTSensorPattern(), mLayers[iLayer].getLayerNumber())) : 0;
     mActiveID.push_back(layerID);
     LOG(info) << "  mActiveID[" << mLayers[iLayer].getLayerNumber() << "] = " << layerID;
   }
 
-  if(!mSegments.size()){LOG(info) << "Registering FCT SensitiveSegmentIDs:";}
+  if(mSegments.size()){LOG(info) << "Registering FCT SensitiveSegmentIDs:";}
   for (int iSegment = 0; iSegment < mSegments.size(); iSegment++) {
     auto segmentID = gMC ? TVirtualMC::GetMC()->VolId(Form("%s_Lay_%d_Sec_%d_Mod_%d", GeometryTGeo::getFCTSensorPattern(), mSegments[iSegment].getLayerNumber(), mSegments[iSegment].getSectorNumber(), mSegments[iSegment].getModuleNumber())) : 0;
     mActiveID.push_back(segmentID);
-    LOG(info) << "  mActiveID[" << "Layer: " << mSegments[iSegment].getLayerNumber() << " Sector: " << mSegments[iSegment].getSectorNumber() << " Module: " << mSegments[iSegment].getModuleNumber() << "] = " << segmentID;
+    LOG(info) << "  mActiveID["
+              << "Layer: " << mSegments[iSegment].getLayerNumber() << " Sector: " << mSegments[iSegment].getSectorNumber() << " Module: " << mSegments[iSegment].getModuleNumber() << "] = " << segmentID;
   }
 }
 
