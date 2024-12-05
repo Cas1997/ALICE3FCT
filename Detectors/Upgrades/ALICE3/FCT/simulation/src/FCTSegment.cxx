@@ -40,28 +40,28 @@ ClassImp(FCTSegment);
 
 FCTSegment::~FCTSegment() = default;
 
-FCTSegment::FCTSegment(Int_t segmentNumber, std::string segmentName, Double_t x, Double_t y, Double_t z, Double_t vertL, Double_t innerL, Double_t outerL, Double_t rotX, Double_t rotY, Double_t rotZ, Float_t segmentx2X0) : 
-            mSegmentNumber(segmentNumber), mSegmentName(segmentName), mx2X0(segmentx2X0),
+FCTSegment::FCTSegment(Int_t layerNumber, Int_t sectorNumber, Int_t moduleNumber, std::string segmentName, Double_t x, Double_t y, Double_t z, Double_t vertL, Double_t innerL, Double_t outerL, Double_t rotX, Double_t rotY, Double_t rotZ, Float_t segmentx2X0) : 
+            mLayerNumber(layerNumber), mSectorNumber(sectorNumber), mModuleNumber(moduleNumber), mSegmentName(segmentName), mx2X0(segmentx2X0),
             mX(x), mY(y), mZ(z), mRotX(rotX), mRotY(rotY), mRotZ(rotZ),
             mVertL(vertL), mInnerL(innerL), mOuterL(outerL)
 {
   
   Float_t Si_X0 = 9.37;   // In cm
   mChipThickness = mx2X0 * Si_X0;
-  LOG(info) << "Creating FCT segment: segment " << mSegmentNumber;
+  LOG(info) << "Creating FCT segment: Layer " << mLayerNumber << " Sector: " << mSectorNumber << " Module: " << mModuleNumber;
   LOG(info) << "   Using silicon X0 = " << Si_X0 << " to emulate segment radiation length.";
   LOG(info) << "   Segment z = " << mZ << " ; vertL = " << mVertL << " ; innerL = " << mInnerL << " ; outerL = " << mOuterL <<  " ; x2X0 = " << mx2X0 << " ; ChipThickness = " << mChipThickness;
 }
 
 void FCTSegment::createSegment(TGeoVolume* motherVolume)
 {
-  if (mSegmentNumber < 0) {
+  if (mLayerNumber < 0 || mSectorNumber < 0 || mModuleNumber < 0) {
     return;
   }
   // Create tube, set sensitive volume, add to mother volume
 
-  std::string chipName = o2::fct::GeometryTGeo::getFCTChipPattern() + std::to_string(mSegmentNumber),
-              sensName = Form("%s_%d", GeometryTGeo::getFCTSensorPattern(), mSegmentNumber);
+  std::string chipName = Form("%s_Lay_%d_Sec_%d_Mod_%d", o2::fct::GeometryTGeo::getFCTChipPattern(), mLayerNumber, mSectorNumber, mModuleNumber);
+  std::string sensName = Form("%s_Lay_%d_Sec_%d_Mod_%d", GeometryTGeo::getFCTSensorPattern(), mLayerNumber, mSectorNumber, mModuleNumber);
   TGeoTrap *sensor = new TGeoTrap(mChipThickness/2., 0., 0., 
                                   mVertL/2., mInnerL/2., mOuterL/2., 0.,
                                   mVertL/2., mInnerL/2., mOuterL/2., 0.);

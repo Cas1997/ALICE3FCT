@@ -34,7 +34,7 @@ class FCTSegment : public TObject
   FCTSegment() = default;
 
   // Segment constructor
-  FCTSegment(Int_t segmentNumber, std::string segmentName, Double_t x, Double_t y, Double_t z, Double_t vertL, Double_t innerL, Double_t outerL, Double_t rotX, Double_t rotY, Double_t rotZ, Float_t segmentx2X0);
+  FCTSegment(Int_t layerNumber, Int_t sectorNumber, Int_t moduleNumber, std::string segmentName, Double_t x, Double_t y, Double_t z, Double_t vertL, Double_t innerL, Double_t outerL, Double_t rotX, Double_t rotY, Double_t rotZ, Float_t segmentx2X0);
 
   /// Copy constructor
   FCTSegment(const FCTSegment&) = default;
@@ -46,7 +46,9 @@ class FCTSegment : public TObject
   ~FCTSegment() override;
 
   /// getters
-  auto getSegmentNumber() const { return mSegmentNumber; }
+  auto getLayerNumber() const { return mLayerNumber; }
+  auto getSectorNumber() const { return mSectorNumber; }
+  auto getModuleNumber() const { return mModuleNumber; }
   auto getX() const { return mX; }
   auto getY() const { return mY; }
   auto getZ() const { return mZ; }
@@ -63,7 +65,9 @@ class FCTSegment : public TObject
   virtual void createSegment(TGeoVolume* motherVolume);
 
  private:
-  Int_t mSegmentNumber = -1; 				///< Current segment number
+  Int_t mLayerNumber = -1;
+  Int_t mSectorNumber = -1;
+  Int_t mModuleNumber = -1;
   std::string mSegmentName;  			///< Current segment name
   Double_t mVertL;                 ///< Vertical length of the trapezoid
   Double_t mInnerL;                ///< Inner side length of the trapezoid

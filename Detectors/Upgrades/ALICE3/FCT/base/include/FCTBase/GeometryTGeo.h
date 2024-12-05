@@ -92,24 +92,28 @@ class GeometryTGeo : public o2::itsmft::GeometryTGeo
   static const char* getFCTVolPattern() { return sVolumeName.c_str(); }
   static const char* getFCTInnerVolPattern() { return sInnerVolumeName.c_str(); }
   static const char* getFCTLayerPattern() { return sLayerName.c_str(); }
+  static const char* getFCTSegmentPattern() { return sSegmentName.c_str(); }
   static const char* getFCTChipPattern() { return sChipName.c_str(); }
   static const char* getFCTSensorPattern() { return sSensorName.c_str(); }
 
   static const char* composeSymNameFCT(Int_t d) { return Form("%s_%d", o2::detectors::DetID(o2::detectors::DetID::FCT).getName(), d); }
   static const char* composeSymNameLayer(Int_t d, Int_t lr);
+  static const char* composeSymNameLayer(Int_t d, Int_t lr, Int_t sec, Int_t mod);
   static const char* composeSymNameChip(Int_t d, Int_t lr);
+  static const char* composeSymNameChip(Int_t d, Int_t lr, Int_t sec, Int_t mod);
   static const char* composeSymNameSensor(Int_t d, Int_t lr);
+  static const char* composeSymNameSensor(Int_t d, Int_t lr, Int_t sec, Int_t mod);
 
  protected:
-  static constexpr int MAXLAYERS = 200; ///< max number of active layers/segments
+  static constexpr int MAXACTIVE = 200; ///< max number of active layers/segments
 
-  Int_t mNumberOfLayers;               ///< number of layers
+  Int_t mNumberOfActives;               ///< number of layers/segments (whichever is selected)
   static std::string sInnerVolumeName; ///< Mother inner volume name
   static std::string sVolumeName;      ///< Mother volume name
+  static std::string sSegmentName;     ///< Segment name
   static std::string sLayerName;       ///< Layer name
   static std::string sChipName;        ///< Chip name
-
-  static std::string sSensorName; ///< Sensor name
+  static std::string sSensorName;      ///< Sensor name
 
  private:
   static std::unique_ptr<o2::fct::GeometryTGeo> sInstance; ///< singletone instance

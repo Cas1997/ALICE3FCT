@@ -80,10 +80,10 @@ void Detector::buildFCTFromFile(std::string configFileName)
   -77.5       3.92    14.35   0.0042      1
   */
 
-  mLayerName.clear();
+  mActiveName.clear();
   mLayers.clear();
   mConverterLayers.clear();
-  mLayerID.clear();
+  mActiveID.clear();
 
   LOG(info) << "Building FCT Detector: From file";
   LOG(info) << "   FCT detector configuration: " << configFileName;
@@ -125,7 +125,7 @@ void Detector::buildFCTFromFile(std::string configFileName)
     iss >> Layerx2X0;
 
     std::string layerName = GeometryTGeo::getFCTLayerPattern() + std::string("_") + std::to_string(layerNumber);
-    mLayerName.push_back(layerName);
+    mActiveName.push_back(layerName);
     if (layerType == 0) {
       LOG(info) << "Adding Disk Layer " << layerName << " at z = " << z_layer << " ; r_in = " << r_in << " ; r_out = " << r_out_l_side << " x/X0 = " << Layerx2X0;
       layerNumberDisk++;
@@ -144,8 +144,8 @@ void Detector::buildFCTFromFile(std::string configFileName)
     layerNumber++;
   }
 
-  mNumberOfLayers = layerNumber;
-  LOG(info) << " Loaded FCT Detector with  " << mNumberOfLayers << " layers";
+  mNumberOfActives = layerNumber;
+  LOG(info) << " Loaded FCT Detector with  " << mNumberOfActives << " layers";
   LOG(info) << " Of which " << layerNumberDisk << " are disks";
   LOG(info) << " Of which " << layerNumberSquare << " are disks";
 }
@@ -187,17 +187,17 @@ void Detector::buildBasicFCT(const FCTBaseParam& param)
   auto etaIn = param.etaIn;
   auto etaOut = param.etaOut;
   auto Layerx2X0 = param.Layerx2X0;
-  mNumberOfLayers = param.nLayers;
-  mLayerID.clear();
+  mNumberOfActives = param.nLayers;
+  mActiveID.clear();
 
   Int_t type = 0; // Disk
 
-  for (Int_t layerNumber = 0; layerNumber < mNumberOfLayers; layerNumber++) {
-    std::string layerName = GeometryTGeo::getFCTLayerPattern() + std::to_string(layerNumber); // + mNumberOfLayers * direction);
-    mLayerName.push_back(layerName);
+  for (Int_t layerNumber = 0; layerNumber < mNumberOfActives; layerNumber++) {
+    std::string layerName = GeometryTGeo::getFCTLayerPattern() + std::to_string(layerNumber); // + mNumberOfActives * direction);
+    mActiveName.push_back(layerName);
 
     // Adds evenly spaced layers
-    Float_t layerZ = z_first + (layerNumber * z_length / (mNumberOfLayers - 1)) * std::copysign(1, z_first);
+    Float_t layerZ = z_first + (layerNumber * z_length / (mNumberOfActives - 1)) * std::copysign(1, z_first);
     Float_t rIn = std::abs(layerZ * std::tan(2.f * std::atan(std::exp(-etaIn))));
     Float_t rOut = std::abs(layerZ * std::tan(2.f * std::atan(std::exp(-etaOut))));
     mLayers.emplace_back(layerNumber, layerName, layerZ, rIn, rOut, Layerx2X0, type);
@@ -223,8 +223,8 @@ void Detector::buildSegmentedFCT(const FCTBaseParam& param){
     {490.0, 5.0, 19.0, layersx2X0},
     {500.0, 5.0, 19.0, layersx2X0}};
 
-  mLayerID.clear();
-  mLayerName.clear();
+  mActiveID.clear();
+  mActiveName.clear();
   mLayers.clear();
 
   Double_t segAngle = 2.*TMath::Pi() / (Double_t)param.nAziSeg;
@@ -247,13 +247,14 @@ void Detector::buildSegmentedFCT(const FCTBaseParam& param){
         Double_t xPosTrap = rTrapCenter * TMath::Cos(azimuthalNumber * segAngle);
         Double_t yPosTrap = rTrapCenter * TMath::Sin(azimuthalNumber * segAngle);
         Double_t xRot = -90 + azimuthalNumber*segAngle*kRadDeg;
-        std::string segmentName = GeometryTGeo::getFCTLayerPattern() + std::to_string(segmentNumber);
-        mSegments.emplace_back(segmentNumber, segmentName, xPosTrap, yPosTrap, zPosTrap, trapezoidVertLength, innerTrapLength, outerTrapLength, xRot, 0., 0., x2X0);
+        std::string segmentName = Form("%s_Lay_%d_Sec_%d_Mod_%d", o2::fct::GeometryTGeo::getFCTLayerPattern(), layerNumber, azimuthalNumber, radialNumber);
+        mActiveName.push_back(segmentName);
+        mSegments.emplace_back(layerNumber, azimuthalNumber, radialNumber, segmentName, xPosTrap, yPosTrap, zPosTrap, trapezoidVertLength, innerTrapLength, outerTrapLength, xRot, 0., 0., x2X0);
         segmentNumber++;
       }
     }
   }
-  mNumberOfLayers = segmentNumber;
+  mNumberOfActives = segmentNumber;
 }
 
 //_________________________________________________________________________________________________
@@ -263,7 +264,7 @@ void Detector::buildFCTV1()
 
   LOG(info) << "Building FCT Detector: V1";
 
-  mNumberOfLayers = 11;
+  mNumberOfActives = 11;
   Float_t layersx2X0 = 1.e-2;
 
   std::vector<std::array<Float_t, 4>> layersConfig{
@@ -279,15 +280,15 @@ void Detector::buildFCTV1()
     {490.0, 5.0, 19.0, layersx2X0},
     {500.0, 5.0, 19.0, layersx2X0}};
 
-  mLayerID.clear();
-  mLayerName.clear();
+  mActiveID.clear();
+  mActiveName.clear();
   mLayers.clear();
 
   Int_t type = 0; // Disk
 
-  for (int layerNumber = 0; layerNumber < mNumberOfLayers; layerNumber++) {
+  for (int layerNumber = 0; layerNumber < mNumberOfActives; layerNumber++) {
     std::string layerName = GeometryTGeo::getFCTLayerPattern() + std::to_string(layerNumber);
-    mLayerName.push_back(layerName);
+    mActiveName.push_back(layerName);
     Float_t z = layersConfig[layerNumber][0];
 
     Float_t rIn = layersConfig[layerNumber][1];
@@ -316,9 +317,9 @@ Detector::Detector(const Detector& rhs)
     /// Container for data points
     mHits(o2::utils::createSimVector<o2::itsmft::Hit>())
 {
-  mLayerID = rhs.mLayerID;
-  mLayerName = rhs.mLayerName;
-  mNumberOfLayers = rhs.mNumberOfLayers;
+  mActiveID = rhs.mActiveID;
+  mActiveName = rhs.mActiveName;
+  mNumberOfActives = rhs.mNumberOfActives;
 }
 
 //_________________________________________________________________________________________________
@@ -349,10 +350,11 @@ Detector& Detector::operator=(const Detector& rhs)
   // base class assignment
   base::Detector::operator=(rhs);
 
-  mLayerID = rhs.mLayerID;
-  mLayerName = rhs.mLayerName;
-  mNumberOfLayers = rhs.mNumberOfLayers;
+  mActiveID = rhs.mActiveID;
+  mActiveName = rhs.mActiveName;
+  mNumberOfActives = rhs.mNumberOfActives;
   mLayers = rhs.mLayers;
+  mSegments = rhs.mSegments;
   mTrackData = rhs.mTrackData;
 
   /// Container for data points
@@ -381,7 +383,7 @@ Bool_t Detector::ProcessHits(FairVolume* vol)
   }
 
   Int_t lay = 0, volID = vol->getMCid();
-  while ((lay <= mLayerID.size()) && (volID != mLayerID[lay])) {
+  while ((lay <= mActiveID.size()) && (volID != mActiveID[lay])) {
     ++lay;
   }
 
@@ -601,15 +603,15 @@ void Detector::createGeometry()
   if(!mLayers.size()){LOG(info) << "Registering FCT SensitiveLayerIDs:";}
   for (int iLayer = 0; iLayer < mLayers.size(); iLayer++) {
     auto layerID = gMC ? TVirtualMC::GetMC()->VolId(Form("%s_%d", GeometryTGeo::getFCTSensorPattern(), mLayers[iLayer].getLayerNumber())) : 0;
-    mLayerID.push_back(layerID);
-    LOG(info) << "  mLayerID[" << mLayers[iLayer].getLayerNumber() << "] = " << layerID;
+    mActiveID.push_back(layerID);
+    LOG(info) << "  mActiveID[" << mLayers[iLayer].getLayerNumber() << "] = " << layerID;
   }
 
   if(!mSegments.size()){LOG(info) << "Registering FCT SensitiveSegmentIDs:";}
   for (int iSegment = 0; iSegment < mSegments.size(); iSegment++) {
-    auto segmentID = gMC ? TVirtualMC::GetMC()->VolId(Form("%s_%d", GeometryTGeo::getFCTSensorPattern(), mSegments[iSegment].getSegmentNumber())) : 0;
-    mLayerID.push_back(segmentID);
-    LOG(info) << "  mSegmentID[" << mSegments[iSegment].getSegmentNumber() << "] = " << segmentID;
+    auto segmentID = gMC ? TVirtualMC::GetMC()->VolId(Form("%s_Lay_%d_Sec_%d_Mod_%d", GeometryTGeo::getFCTSensorPattern(), mSegments[iSegment].getLayerNumber(), mSegments[iSegment].getSectorNumber(), mSegments[iSegment].getModuleNumber())) : 0;
+    mActiveID.push_back(segmentID);
+    LOG(info) << "  mActiveID[" << "Layer: " << mSegments[iSegment].getLayerNumber() << " Sector: " << mSegments[iSegment].getSectorNumber() << " Module: " << mSegments[iSegment].getModuleNumber() << "] = " << segmentID;
   }
 }
 
@@ -619,20 +621,17 @@ void Detector::defineSensitiveVolumes()
   TGeoManager* geoManager = gGeoManager;
   TGeoVolume* v;
 
-  TString volumeName;
   LOG(info) << "Adding FCT Sensitive Volumes";
 
   // The names of the FCT sensitive volumes have the format: FCTSensor_(0,1)_(0...sNumberLayers-1)
   for (Int_t iLayer = 0; iLayer < mLayers.size(); iLayer++) {
-    volumeName = o2::fct::GeometryTGeo::getFCTSensorPattern() + std::to_string(mLayers[iLayer].getLayerNumber());
     v = geoManager->GetVolume(Form("%s_%d", GeometryTGeo::getFCTSensorPattern(), mLayers[iLayer].getLayerNumber()));
     LOG(info) << "Adding FCT Sensitive Volume => " << v->GetName();
     AddSensitiveVolume(v);
   }
 
   for (Int_t iSegment = 0; iSegment < mSegments.size(); iSegment++) {
-    volumeName = o2::fct::GeometryTGeo::getFCTSensorPattern() + std::to_string(mSegments[iSegment].getSegmentNumber());
-    v = geoManager->GetVolume(Form("%s_%d", GeometryTGeo::getFCTSensorPattern(), mSegments[iSegment].getSegmentNumber()));
+    v = geoManager->GetVolume(Form("%s_Lay_%d_Sec_%d_Mod_%d", GeometryTGeo::getFCTSensorPattern(), mSegments[iSegment].getLayerNumber(), mSegments[iSegment].getSectorNumber(), mSegments[iSegment].getModuleNumber()));
     LOG(info) << "Adding FCT Sensitive Volume => " << v->GetName();
     AddSensitiveVolume(v);   
   }

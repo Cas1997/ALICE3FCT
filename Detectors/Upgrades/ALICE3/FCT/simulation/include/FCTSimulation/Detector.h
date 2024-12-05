@@ -111,7 +111,7 @@ class Detector : public o2::base::DetImpl<Detector>
   void PreTrack() override { ; }
 
   /// Returns the number of layers
-  Int_t getNumberOfLayers() const { return mNumberOfLayers; }
+  Int_t getNumberOfLayers() const { return mNumberOfActives; }
 
   void buildBasicFCT(const FCTBaseParam& param);
   void buildFCTV1();
@@ -123,11 +123,11 @@ class Detector : public o2::base::DetImpl<Detector>
   void exportLayout();
 
  private:
-  std::vector<Int_t> mLayerID;
+  std::vector<Int_t> mActiveID;
   std::vector<Int_t> mConverterLayerId;
-  std::vector<TString> mLayerName;
+  std::vector<TString> mActiveName;
   std::vector<TString> mConverterLayerName;
-  Int_t mNumberOfLayers;
+  Int_t mNumberOfActives;
   Int_t mNumberOfConverterLayers;
 
   /// this is transient data about track passing the sensor

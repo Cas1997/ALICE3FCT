@@ -51,6 +51,7 @@ std::unique_ptr<o2::fct::GeometryTGeo> GeometryTGeo::sInstance;
 
 std::string GeometryTGeo::sVolumeName = "FCTV";          ///< Mother volume name
 std::string GeometryTGeo::sInnerVolumeName = "FCTInner"; ///< Mother inner volume name
+std::string GeometryTGeo::sSegmentName = "FCTSegment";   ///< Segment name
 std::string GeometryTGeo::sLayerName = "FCTLayer";       ///< Layer name
 std::string GeometryTGeo::sChipName = "FCTChip";         ///< Sensor name
 std::string GeometryTGeo::sSensorName = "FCTSensor";     ///< Sensor name
@@ -102,6 +103,24 @@ const char* GeometryTGeo::composeSymNameChip(Int_t d, Int_t lr)
 const char* GeometryTGeo::composeSymNameSensor(Int_t d, Int_t lr)
 {
   return Form("%s/%s%d", composeSymNameChip(d, lr), getFCTSensorPattern(), lr);
+}
+
+//__________________________________________________________________________
+const char* GeometryTGeo::composeSymNameLayer(Int_t d, Int_t lr, Int_t sec, Int_t mod)
+{
+  return Form("%s/%s%dSec%dMod%d", composeSymNameFCT(d), getFCTSegmentPattern(), lr, sec, mod);
+}
+
+//__________________________________________________________________________
+const char* GeometryTGeo::composeSymNameChip(Int_t d, Int_t lr, Int_t sec, Int_t mod)
+{
+  return Form("%s/%s%dSec%dMod%d", composeSymNameLayer(d, lr, sec, mod), getFCTChipPattern(), lr, sec, mod);
+}
+
+//__________________________________________________________________________
+const char* GeometryTGeo::composeSymNameSensor(Int_t d, Int_t lr, Int_t sec, Int_t mod)
+{
+  return Form("%s/%s%dSec%dMod%d", composeSymNameChip(d, lr, sec, mod), getFCTSensorPattern(), lr, sec, mod);
 }
 
 //__________________________________________________________________________
